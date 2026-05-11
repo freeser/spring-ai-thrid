@@ -28,8 +28,34 @@ public class MyAdvisorTest {
     @Test
     public void test() throws ApiException {
         System.out.println(
+                chatClient.prompt().user("你好")
+                        .call().content()
+        );
+    }
+    @Test
+    public void test02() throws ApiException {
+        System.out.println(
                 chatClient.prompt().user("你好，违禁词A")
                         .call().content()
         );
+    }
+
+    @Test
+    public void test03() throws ApiException, InterruptedException {
+        // 同时开启10个线程
+        for (int i = 0; i < 10; i++) {
+            new Thread(() -> {
+                try{
+                    System.out.println(chatClient.prompt()
+                            .user("你好")
+                            .call()
+                            .content());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }).start();
+
+        }
+        Thread.sleep(5000);
     }
 }

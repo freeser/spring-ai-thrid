@@ -1,6 +1,7 @@
 package com.fyfe.config;
 
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
+import com.fyfe.advisor.CurrentLimitAdvisor;
 import com.fyfe.advisor.FilterAdvisor;
 import com.fyfe.advisor.LogAdvisor;
 import jakarta.annotation.Resource;
@@ -17,7 +18,8 @@ public class ChatClientConfig {
     public ChatClient getChatClient() {
         return ChatClient.builder(dashScopeChatModel).defaultAdvisors(
                 new LogAdvisor(),
-                new FilterAdvisor()
+                new FilterAdvisor(),
+                new CurrentLimitAdvisor()
         ).build();
     }
 }

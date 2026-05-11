@@ -46,6 +46,6 @@ public class FilterAdvisor implements BaseAdvisor {
 
     @Override
     public int getOrder() {
-        return 0;
+        return 1;
     }
 }
