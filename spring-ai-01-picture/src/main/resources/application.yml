@@ -2,3 +2,13 @@ spring:
   ai:
     dashscope:
       api-key: sk-8de8b8e9f68048b18bf58c582b0cd2cc # 配置百炼平台的api-key
+
+# 图生图的配置
+picture:
+  param:
+    watermark: false
+    negative_prompt:
+    num: 1
+    prompt_extend: true
+    size: 2048*2048
+    model: qwen-image-2.0-pro
