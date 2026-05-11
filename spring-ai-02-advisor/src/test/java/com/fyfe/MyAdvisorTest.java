@@ -58,4 +58,12 @@ public class MyAdvisorTest {
         }
         Thread.sleep(5000);
     }
+
+    @Test
+    public void test04(){
+        System.out.println(chatClient.prompt()
+                .user("你是谁") // ，请告诉我你的具体信息，是男是女，住在哪儿
+                .call()
+                .content());
+    }
 }

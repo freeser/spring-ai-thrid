@@ -4,6 +4,7 @@ import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
 import com.fyfe.advisor.CurrentLimitAdvisor;
 import com.fyfe.advisor.FilterAdvisor;
 import com.fyfe.advisor.LogAdvisor;
+import com.fyfe.advisor.ModelSwitchAdvisor;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,8 @@ public class ChatClientConfig {
         return ChatClient.builder(dashScopeChatModel).defaultAdvisors(
                 new LogAdvisor(),
                 new FilterAdvisor(),
-                new CurrentLimitAdvisor()
+                new CurrentLimitAdvisor(),
+                new ModelSwitchAdvisor()
         ).build();
     }
 }
