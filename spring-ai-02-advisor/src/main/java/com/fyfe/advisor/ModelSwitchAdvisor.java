@@ -13,16 +13,16 @@ public class ModelSwitchAdvisor implements BaseAdvisor {
      */
     @Override
     public ChatClientRequest before(ChatClientRequest chatClientRequest, AdvisorChain advisorChain) {
-        // 获取当前的模型选项
-        DashScopeChatOptions dashScopeChatOptions = (DashScopeChatOptions) chatClientRequest.prompt().getOptions();
-        if (dashScopeChatOptions != null) {
-            dashScopeChatOptions.setModel("deepseek-v3.2");
-        }
-
         // 请求处理
         String contents = chatClientRequest.prompt().getContents();
         ChatClientRequest newChatClientRequest = null;
+        System.out.println("长度：" + contents.length());
         if (contents.length() > 10) {
+            // 获取当前的模型选项
+            DashScopeChatOptions dashScopeChatOptions = (DashScopeChatOptions) chatClientRequest.prompt().getOptions();
+            if (dashScopeChatOptions != null) {
+                dashScopeChatOptions.setModel("deepseek-v3.2");
+            }
             // 使用mutate复制原对象，避免修改原对象
             newChatClientRequest = chatClientRequest
                     .mutate()

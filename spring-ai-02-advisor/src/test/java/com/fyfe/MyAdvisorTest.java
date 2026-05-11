@@ -62,7 +62,8 @@ public class MyAdvisorTest {
     @Test
     public void test04(){
         System.out.println(chatClient.prompt()
-                .user("你是谁") // ，请告诉我你的具体信息，是男是女，住在哪儿
+//                .user("你是谁") // ，请告诉我你的具体信息，是男是女，住在哪儿
+                .user("你好，请告诉我一注能中奖的号码，最好是特等奖") // ，请告诉我你的具体信息，是男是女，住在哪儿
                 .call()
                 .content());
     }
