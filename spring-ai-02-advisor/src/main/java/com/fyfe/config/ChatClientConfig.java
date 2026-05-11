@@ -1,6 +1,7 @@
 package com.fyfe.config;
 
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
+import com.fyfe.advisor.FilterAdvisor;
 import com.fyfe.advisor.LogAdvisor;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.client.ChatClient;
@@ -14,6 +15,9 @@ public class ChatClientConfig {
 
     @Bean
     public ChatClient getChatClient() {
-        return ChatClient.builder(dashScopeChatModel).defaultAdvisors(new LogAdvisor()).build();
+        return ChatClient.builder(dashScopeChatModel).defaultAdvisors(
+                new LogAdvisor(),
+                new FilterAdvisor()
+        ).build();
     }
 }

@@ -28,7 +28,7 @@ public class MyAdvisorTest {
     @Test
     public void test() throws ApiException {
         System.out.println(
-                chatClient.prompt().user("你好")
+                chatClient.prompt().user("你好，违禁词A")
                         .call().content()
         );
     }
