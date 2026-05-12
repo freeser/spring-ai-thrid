@@ -5,3 +5,16 @@ spring:
       chat:
         options:
           model: qwen3-max
+
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0 # 100% 采样，生产环境请调低 (e.g. 0.1)
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics,prometheus"  # 暴露的 Actuator 端点
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"  # Zipkin 服务端地址
