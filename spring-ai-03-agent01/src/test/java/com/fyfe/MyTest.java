@@ -1,10 +1,19 @@
 package com.fyfe;
 
 
+import com.alibaba.cloud.ai.graph.CompileConfig;
+import com.alibaba.cloud.ai.graph.CompiledGraph;
+import com.alibaba.cloud.ai.graph.NodeOutput;
+import com.alibaba.cloud.ai.graph.StateGraph;
+import com.alibaba.cloud.ai.graph.exception.GraphStateException;
+import com.alibaba.cloud.ai.graph.streaming.StreamingOutput;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Map;
 
 @SpringBootTest(classes = StartApp.class)
 public class MyTest {
@@ -43,5 +52,28 @@ public class MyTest {
 
         // 输出最终结果
         System.out.println("优化后的文章：\n" + optimizedContent);
+    }
+
+    @Autowired
+    private StateGraph evaluationOptimizerWorkflow;
+
+    @Test
+    public void text02() throws GraphStateException {
+        // 编译执行工作流
+        CompiledGraph compiledGraph = evaluationOptimizerWorkflow.compile(
+                CompileConfig.builder().build()
+        );
+        NodeOutput lastOutput = compiledGraph.stream(Map.of("input", "请编写一篇关于丰田酷路泽的介绍短文,内容包括发展历史、发展趋势以及优缺点内容,字数控制在500字左右"))
+                .doOnNext(nodeOutput -> {
+                    if (nodeOutput instanceof StreamingOutput<?> streamingOutput) {
+                        System.out.println("从节点输出：" + streamingOutput.node() + ":"
+                                + streamingOutput.agent() + ":"
+                                + streamingOutput.message().getText());
+                    }
+                })
+                .blockLast();
+        // 由于在评估后面添加的END，所以最后一次输出默认是评估的结果，这里通过data的方式获取到其中的content的结果，也就是作者写的文章
+        AssistantMessage content = (AssistantMessage) lastOutput.state().data().get("content");
+        System.out.println("最后一次输出：\n" + content.getText());
     }
 }
