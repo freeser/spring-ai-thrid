@@ -3,6 +3,7 @@ package com.fyfe;
 
 import com.alibaba.cloud.ai.graph.*;
 import com.alibaba.cloud.ai.graph.agent.flow.agent.LlmRoutingAgent;
+import com.alibaba.cloud.ai.graph.agent.flow.agent.SupervisorAgent;
 import com.alibaba.cloud.ai.graph.exception.GraphRunnerException;
 import com.alibaba.cloud.ai.graph.exception.GraphStateException;
 import com.alibaba.cloud.ai.graph.streaming.StreamingOutput;
@@ -91,5 +92,16 @@ public class MyTest {
         // LLM会路由到 translatorAgent
         Optional<OverAllState> result3 = llmRoutingAgent.invoke("请将以下内容翻译成英文：春暖花开");
         System.out.println(result3.get().value("translator_output"));
+    }
+
+
+    @Autowired
+    private SupervisorAgent supervisorAgent;
+
+    @Test
+    public void test03() throws GraphRunnerException {
+        // 使用 - 监督者会根据任务自动路由并支持多步骤处理
+        Optional<OverAllState> result = supervisorAgent.invoke("帮我写一篇关于春天的短文，并翻译成英文");
+        System.out.println(result);
     }
 }
