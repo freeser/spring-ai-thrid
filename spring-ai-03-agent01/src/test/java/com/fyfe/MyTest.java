@@ -1,10 +1,9 @@
 package com.fyfe;
 
 
-import com.alibaba.cloud.ai.graph.CompileConfig;
-import com.alibaba.cloud.ai.graph.CompiledGraph;
-import com.alibaba.cloud.ai.graph.NodeOutput;
-import com.alibaba.cloud.ai.graph.StateGraph;
+import com.alibaba.cloud.ai.graph.*;
+import com.alibaba.cloud.ai.graph.agent.flow.agent.LlmRoutingAgent;
+import com.alibaba.cloud.ai.graph.exception.GraphRunnerException;
 import com.alibaba.cloud.ai.graph.exception.GraphStateException;
 import com.alibaba.cloud.ai.graph.streaming.StreamingOutput;
 import org.junit.jupiter.api.Test;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Map;
+import java.util.Optional;
 
 @SpringBootTest(classes = StartApp.class)
 public class MyTest {
@@ -75,5 +75,21 @@ public class MyTest {
         // 由于在评估后面添加的END，所以最后一次输出默认是评估的结果，这里通过data的方式获取到其中的content的结果，也就是作者写的文章
         AssistantMessage content = (AssistantMessage) lastOutput.state().data().get("content");
         System.out.println("最后一次输出：\n" + content.getText());
+    }
+
+    @Autowired
+    private LlmRoutingAgent llmRoutingAgent;
+
+    @Test
+    public void test01() throws GraphRunnerException {
+        // LLM会路由到 writerAgent
+        Optional<OverAllState> result1 = llmRoutingAgent.invoke("帮我写一篇关于春天的散文");
+        System.out.println(result1.get().value("writer_output"));
+        // LLM会路由到 reviewerAgent
+        Optional<OverAllState> result2 = llmRoutingAgent.invoke("请帮我修改这篇文章：春天来了，花开了。");
+        System.out.println(result2.get().value("reviewer_output"));
+        // LLM会路由到 translatorAgent
+        Optional<OverAllState> result3 = llmRoutingAgent.invoke("请将以下内容翻译成英文：春暖花开");
+        System.out.println(result3.get().value("translator_output"));
     }
 }
