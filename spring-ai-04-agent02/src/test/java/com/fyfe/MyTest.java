@@ -21,7 +21,7 @@ public class MyTest {
     public void test01() throws GraphRunnerException {
         // 使用
         Optional<OverAllState> result = blogAgent.invoke("帮我写一个100字左右的散文");
-
+        // 下面这块只是为了打印执行过程
         if (result.isPresent()) {
             OverAllState state = result.get();
 
