@@ -1,0 +1,7 @@
+spring:
+  ai:
+    dashscope:
+      api-key: sk-8de8b8e9f68048b18bf58c582b0cd2cc # 配置百炼平台的api-key
+      chat:
+        options:
+          model: deepseek-v3.2
